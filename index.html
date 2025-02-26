@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Engine Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        .subsection {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Physics Engine Documentation</h1>
+
+<div class="section">
+    <h2>CollisionCallbacks.h</h2>
+    <p>This file defines collision and character controller callbacks for the physics engine.</p>
+    <div class="subsection">
+        <h3>CollisionCallback Class</h3>
+        <p>Handles collision events in the physics simulation.</p>
+        <ul>
+            <li><code>void onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs)</code>: Called when a collision occurs.</li>
+            <li><code>void onTrigger(physx::PxTriggerPair* pairs, physx::PxU32 count)</code>: Called when a trigger event occurs.</li>
+        </ul>
+        <h3>CharacterControllerCallback Class</h3>
+        <p>Handles character controller collision events.</p>
+        <ul>
+            <li><code>void onShapeHit(const physx::PxControllerShapeHit& hit)</code>: Called when the character controller hits a shape.</li>
+            <li><code>void onControllerHit(const physx::PxControllersHit& hit)</code>: Called when the character controller hits another controller.</li>
+            <li><code>void onObstacleHit(const physx::PxControllerObstacleHit& hit)</code>: Called when the character controller hits an obstacle.</li>
+        </ul>
+        <h3>Callbacks Class</h3>
+        <p>Provides static methods to get collision and character controller callbacks.</p>
+        <ul>
+            <li><code>static CollisionCallback* GetCollisionCallback()</code>: Returns the collision callback instance.</li>
+            <li><code>static CharacterControllerCallback* GetCharacterControllerCallback()</code>: Returns the character controller callback instance.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>PhysicsEngine.h</h2>
+    <p>This file defines the main physics engine class, which initializes and manages the physics simulation.</p>
+    <div class="subsection">
+        <h3>PhysicsEngine Class</h3>
+        <p>Manages the physics simulation and provides access to the PhysX components.</p>
+        <ul>
+            <li><code>static void Init()</code>: Initializes the physics engine.</li>
+            <li><code>static void BeginFrame()</code>: Updates the global poses of all colliders at the start of each frame.</li>
+            <li><code>static void Update(float deltaTime)</code>: Updates the physics engine and simulates the physics.</li>
+            <li><code>static physx::PxPhysics* GetPhysics()</code>: Returns the PhysX physics object.</li>
+            <li><code>static physx::PxFoundation* GetFoundation()</code>: Returns the PhysX foundation object.</li>
+            <li><code>static physx::PxDefaultCpuDispatcher* GetDispatcher()</code>: Returns the CPU dispatcher.</li>
+            <li><code>static physx::PxControllerManager* GetControllerManager()</code>: Returns the character controller manager.</li>
+            <li><code>static const PhysicsScene& GetConstScene()</code>: Returns the active physics scene.</li>
+            <li><code>static PhysicsScene& GetScene()</code>: Returns the active physics scene for modification.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>PhysicsFactory.h</h2>
+    <p>This file defines the PhysicsFactory class, which is responsible for creating physics actors and colliders.</p>
+    <div class="subsection">
+        <h3>PhysicsFactory Class</h3>
+        <p>Provides static methods to create physics actors and colliders.</p>
+        <ul>
+            <li><code>static physx::PxRigidActor* CreatePhysicsActor(bool isStatic)</code>: Creates a physics actor.</li>
+            <li><code>static physx::PxShape* CreateBoxCollider(physx::PxRigidActor* aActor, CU::Vector3f halfExtents, int id)</code>: Creates a box collider.</li>
+            <li><code>static physx::PxShape* CreateCapsuleCollider(physx::PxRigidActor* aActor, float height, float radius, int id)</code>: Creates a capsule collider.</li>
+            <li><code>static physx::PxShape* CreateSphereCollider(physx::PxRigidActor* aActor, float radius, int id)</code>: Creates a sphere collider.</li>
+            <li><code>static physx::PxController* CreateCharacterController(CharacterControllerSettings& aSettings)</code>: Creates a character controller.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>PhysicsMaterialManager.h</h2>
+    <p>This file defines the PhysicsMaterialManager class, which manages physics materials.</p>
+    <div class="subsection">
+        <h3>PhysicsMaterialManager Class</h3>
+        <p>Provides static methods to retrieve physics materials.</p>
+        <ul>
+            <li><code>static physx::PxMaterial* GetMaterial(const eDefaultMaterials& aMaterial)</code>: Returns a default physics material.</li>
+            <li><code>static physx::PxMaterial* GetMaterial(const PhysicsMaterial& aMaterial)</code>: Returns a custom physics material.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>PhysicsQuery.h</h2>
+    <p>This file defines the PhysicsQuery class, which provides methods for performing physics queries such as raycasts and overlaps.</p>
+    <div class="subsection">
+        <h3>PhysicsQuery Class</h3>
+        <p>Provides static methods for performing physics queries.</p>
+        <ul>
+            <li><code>static bool Raycast(const CU::Vector3f& aOrigin, const CU::Vector3f& aDirection, const float& aDistance, eHit* aHit)</code>: Performs a raycast and returns the first hit.</li>
+            <li><code>static bool Raycast(const CU::Vector3f& aOrigin, const CU::Vector3f& aDirection, const float& aDistance, std::vector<eHit>* someRaycastHits)</code>: Performs a raycast and returns all hits.</li>
+            <li><code>static bool BoxCast(const CU::Vector3f& aOrigin, const CU::Vector3f& aDirection, const float& aDistance, const CU::Vector3f& aHalfExtent, eHit* aHit)</code>: Performs a box cast and returns the first hit.</li>
+            <li><code>static bool BoxCast(const CU::Vector3f& aOrigin, const CU::Vector3f& aDirection, const float& aDistance, const CU::Vector3f& aHalfExtent, std::vector<eHit>* someHits)</code>: Performs a box cast and returns all hits.</li>
+            <li><code>static bool SphereCast(const CU::Vector3f& aOrigin, const CU::Vector3f& aDirection, const float& aDistance, const float& aRadius, eHit* aHit)</code>: Performs a sphere cast and returns the first hit.</li>
+            <li><code>static bool SphereCast(const CU::Vector3f& aOrigin, const CU::Vector3f& aDirection, const float& aDistance, const float& aRadius, std::vector<eHit>* someHits)</code>: Performs a sphere cast and returns all hits.</li>
+            <li><code>static bool OverlapsSphere(const CU::Vector3f& aOrigin, const float& aRadius, std::vector<int>* someHits)</code>: Checks for overlaps with a sphere.</li>
+            <li><code>static bool OverlapsBox(const CU::Vector3f& aOrigin, const CU::Vector3f& aHalfExtent, std::vector<int>* someHits)</code>: Checks for overlaps with a box.</li>
+        </ul>
+    </div>
+</div>
+
+<div class="section">
+    <h2>PhysicsUtils.h</h2>
+    <p>This file defines utility structures and settings for the physics engine.</p>
+    <div class="subsection">
+        <h3>PhysicsMaterial Structure</h3>
+        <p>Defines the properties of a physics material.</p>
+        <ul>
+            <li><code>float staticFriction</code>: The static friction coefficient.</li>
+            <li><code>float dynamicFriction</code>: The dynamic friction coefficient.</li>
+            <li><code>float bounciness</code>: The bounciness (restitution) coefficient.</li>
+        </ul>
+        <h3>BasePhysicsSettings Namespace</h3>
+        <p>Defines global physics settings.</p>
+        <ul>
+            <li><code>inline CU::Vector3f Gravity</code>: The global gravity vector.</li>
+            <li><code>inline physx::PxSceneFlag::Enum Flag</code>: The scene flag for the physics simulation.</li>
+        </ul>
+        <h3>CharacterControllerSettings Structure</h3>
+        <p>Defines settings for a character controller.</p>
+        <ul>
+            <li><code>ShapeType shape</code>: The shape type of the character controller (Box or Capsule).</li>
+            <li><code>CU::Vector3f position</code>: The position of the character controller.</li>
+            <li><code>float height</code>: The height of the character controller.</li>
+            <li><code>float forwardWith</code>: The forward width of the character controller.</li>
+            <li><code>float sideWidth</code>: The side width of the character controller.</li>
+            <li><code>float contactOffset</code>: The contact offset of the character controller.</li>
+            <li><code>float stepOffset</code>: The step offset of the character controller.</li>
+            <li><code>float density</code>: The density of the character controller.</li>
+            <li><code>float movementSpeed</code>: The movement speed of the character controller.</li>
+        </ul>
+        <h3>eHit Structure</h3>
+        <p>Defines the result of a physics query hit.</p>
+        <ul>
+            <li><code>int objHit</code>: The ID of the object hit.</li>
+            <li><code>CU::Vector3f normal</code>: The normal vector at the hit point.</li>
+            <li><code>CU::Vector3f point</code>: The hit point in world space.</li>
+            <li><code>float distance</code>: The distance from the origin to the hit point.</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
